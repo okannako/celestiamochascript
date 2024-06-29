@@ -6,4 +6,4 @@ Celestia Mocha Testnet çok uzun zamandır devam ediyor ve Mainnet sonrası da �
 curl -s https://raw.githubusercontent.com/okannako/celestiamochascript/main/nodescript.sh > nodescript.sh && chmod +x nodescript.sh && ./nodescript.sh
 ```
 
-Sormak veya merak ettiğiniz herhangi bir şey olursa Discord üzerinden iletişime geçebilirsiniz.
+Kurulumn sırasında veya sonrasında bir şey sormak isterseniz bana Telegram, Mail ve Discord yoluyla ulaşabirsiniz.
