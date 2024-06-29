@@ -279,8 +279,8 @@ sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential gi
 sudo apt install make -y
 sleep 1
 
-echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
-ver="1.20.3"
+echo -e "\e[1m\e[32m Go Yüklemek \e[0m" && sleep 2
+ver="1.21.1"
 cd $HOME
 wget "https://golang.org/dl/go$ver.linux-amd64.tar.gz"
 sudo rm -rf /usr/local/go
@@ -294,15 +294,15 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.9.4 
+git checkout tags/v0.14.0 
 make build 
 make install 
 make cel-key 
 celestia version && sleep 3
 
-celestia full init --p2p.network blockspacerace
+celestia full init --p2p.network mocha
 
-echo -e '\e[36mIn this step, information about your wallet is shared. >>>PLEASE BACK UP THE MNEMONIC WORDS.<<< After backing up, you can continue by pressing the Enter key.\e[39m'
+echo -e '\e[36mBu adımda cüzdanınızla ilgili bilgiler paylaşılır.. >>>LÜTFEN ANLATICI KELİMELERİ YEDEKLEYİN.<<< Yedekleme yaptıktan sonra Enter tuşuna basarak devam edebilirsiniz.\e[39m'
 read Enter
 
 sudo tee <<EOF >/dev/null /etc/systemd/system/celestia-fulld.service
@@ -312,7 +312,7 @@ After=network-online.target
 
 [Service]
 User=$USER
-ExecStart=/usr/local/bin/celestia full start --core.ip https://rpc-blockspacerace.pops.one --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=false --metrics --metrics.endpoint otel.celestia.tools:4318 --gateway --gateway.addr localhost --gateway.port 26659 --p2p.network blockspacerace
+ExecStart=/usr/local/bin/celestia full start --core.ip rpc-mocha.pops.one:26657 --core.rpc.port 26657 --core.grpc.port 9090 --keyring.accname my_celes_key --metrics.tls=true --metrics --metrics.endpoint otel.celestia-mocha.com --p2p.network mocha
 Restart=on-failure
 RestartSec=3
 LimitNOFILE=4096
@@ -325,7 +325,7 @@ systemctl enable celestia-fulld
 systemctl start celestia-fulld
 
 
-echo -e '\e[36mIMPORTANT: /root/.celestia-full-blockspacerace-0 under the keys folder must be backed up.\e[39m'
+echo -e '\e[36mIMPORTANT: /root/.celestia-full-mocha-4 anahtarlar altındaki klasörün yedeklenmesi gerekir.\e[39m'
 sleep 7
 
 journalctl -u celestia-fulld.service -f
@@ -333,52 +333,39 @@ journalctl -u celestia-fulld.service -f
 break
 ;;
 
-"Light Node Resetting Data")
+"Light Node Data Sıfırla")
 
 systemctl stop celestia-lightd
-celestia light unsafe-reset-store --p2p.network blockspacerace
+celestia light unsafe-reset-store --p2p.network mocha
 systemctl restart celestia-lightd
 journalctl -u celestia-lightd.service -f
 
 break
 ;;
 
-"Bridge Node Resetting Data")
+"Bridge Node Data Sıfırla")
 
 sudo systemctl stop celestia-bridge
-celestia bridge unsafe-reset-store --p2p.network blockspacerace
+celestia bridge unsafe-reset-store --p2p.network mocha
 sudo systemctl restart celestia-bridge
 sudo journalctl -u celestia-bridge.service -f
 
 break
 ;;
 
-"Full Storage Node Resetting Data")
+"Full Storage Node Data Sıfırla")
 
 systemctl stop celestia-fulld
-celestia full unsafe-reset-store --p2p.network blockspacerace
+celestia full unsafe-reset-store --p2p.network mocha
 systemctl restart celestia-fulld
 journalctl -u celestia-fulld.service -f
 
 break
 ;;
 
-"What is Light Node ID?")
+"Light Node ID Nedir ?")
 
-AUTH_TOKEN=$(celestia light auth admin --p2p.network blockspacerace)
-
-curl -X POST \
-     -H "Authorization: Bearer $AUTH_TOKEN" \
-     -H 'Content-Type: application/json' \
-     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
-     http://localhost:26658
-
-break
-;;
-
-"What is Bridge Node ID?")
-
-AUTH_TOKEN=$(celestia bridge auth admin --p2p.network blockspacerace)
+AUTH_TOKEN=$(celestia light auth admin --p2p.network mocha)
 
 curl -X POST \
      -H "Authorization: Bearer $AUTH_TOKEN" \
@@ -389,9 +376,22 @@ curl -X POST \
 break
 ;;
 
-"What is Full Storage Node ID?")
+"Bridge Node ID Nedir ?")
 
-AUTH_TOKEN=$(celestia full auth admin --p2p.network blockspacerace)
+AUTH_TOKEN=$(celestia bridge auth admin --p2p.network mocha)
+
+curl -X POST \
+     -H "Authorization: Bearer $AUTH_TOKEN" \
+     -H 'Content-Type: application/json' \
+     -d '{"jsonrpc":"2.0","id":0,"method":"p2p.Info","params":[]}' \
+     http://localhost:26658
+
+break
+;;
+
+"Full Storage Node ID Nedir ?")
+
+AUTH_TOKEN=$(celestia full auth admin --p2p.network mocha)
 
 curl -X POST \
      -H "Authorization: Bearer $AUTH_TOKEN" \
