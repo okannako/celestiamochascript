@@ -263,7 +263,7 @@ EOF
 sudo systemctl enable celestia-bridge
 sudo systemctl start celestia-bridge
 
-echo -e '\e[36mÖNEMLİ: /root/.celestia-bridge-mocha-4 anahtarlar altındaki klasörün yedeklenmesi gerekir.\e[39m'
+echo -e '\e[36mÖNEMLİ: /root/.celestia-bridge-mocha anahtarlar altındaki klasörün yedeklenmesi gerekir.\e[39m'
 sleep 7
 
 sudo journalctl -u celestia-bridge.service -f
@@ -271,12 +271,12 @@ sudo journalctl -u celestia-bridge.service -f
 break
 ;;
 
-"Full Storage Node Install")
+"Full Storage Node Yüklemek")
 
 echo -e "\e[1m\e[32m Updates \e[0m" && sleep 2
 sudo apt update && sudo apt upgrade -y
 sudo apt install curl tar wget clang pkg-config libssl-dev jq build-essential git ncdu -y
-sudo apt install make -y && cd $HOME
+sudo apt install make -y
 sleep 1
 
 echo -e "\e[1m\e[32m Install Go \e[0m" && sleep 2
