@@ -59,7 +59,7 @@ cd $HOME
 rm -rf celestia-app 
 git clone https://github.com/celestiaorg/celestia-app.git 
 cd celestia-app/ 
-APP_VERSION=v2.3.1
+APP_VERSION=v4.0.6-mocha
 git checkout tags/$APP_VERSION -b $APP_VERSION
 make install
 celestia-appd version && sleep 3
@@ -171,7 +171,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.2 
+git checkout tags/v0.23.1-mocha 
 make build 
 make install 
 make cel-key 
@@ -230,7 +230,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.2 
+git checkout tags/v0.23.1-mocha 
 make build 
 make install 
 make cel-key 
@@ -292,7 +292,7 @@ cd $HOME
 rm -rf celestia-node 
 git clone https://github.com/celestiaorg/celestia-node.git 
 cd celestia-node/ 
-git checkout tags/v0.16.2 
+git checkout tags/v0.23.1-mocha 
 make build 
 make install 
 make cel-key 
